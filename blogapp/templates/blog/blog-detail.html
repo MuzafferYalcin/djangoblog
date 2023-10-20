@@ -1,0 +1,60 @@
+{% extends 'blog/index.html' %}
+
+{% load static%}
+
+{% block content %}
+<div class="container mt-3">
+   <div class="row ">
+       <div class="col-12">
+           
+           <div class="card mb-3">
+               <div class="row" >
+                   <div class="col-md-12">
+                       <div class="card-body">
+                           <h1 class="card-title h3 mb-3">
+                               {{ blog.title|title }}
+                           </h1>
+                           <h6 class="card-title h6 mb-2">
+                                @{{user.username}}
+                           </h6>
+                           <img src="{{blog.image.url}}" alt="" class="img-fluid" style="width:600px;height: auto; float:left; margin-right:20px; margin-bottom: 20px;">
+
+                           <p class="card-text">{{ blog.description|safe }}</p>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <form action="" method="POST">
+            {% csrf_token %}
+                {{form.as_p}}
+                <button type="submit">gönder</button>
+           </form>
+           {% if yorums %}
+           {% for yorum in yorums %}
+           <div class="row my-3">
+                <div class="card">
+                    <div class="card-title p-2">
+                    <strong> @{{yorum.User.username}}</strong>
+                    </div>
+                    <div class="card-body">
+                        {{yorum.content}}
+                    </div>  
+                    {% if request.user.id == yorum.User.id %}
+                    <div>
+                        <button class="btn float-end">delete</button>
+                        <button class="btn float-end">edit</button>
+                    </div>
+                    {% else %}
+                    <div></div>
+                    {% endif %}
+                </div>
+           </div>
+           {% endfor %}
+           {% else %}
+           <div class="bg-warning p-2 rounded-pill text-center " >yorum yok</div>
+           {% endif %}
+       </div>
+   </div>
+</div>
+
+{% endblock %}

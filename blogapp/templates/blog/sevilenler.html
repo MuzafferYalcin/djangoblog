@@ -1,0 +1,30 @@
+{% extends "blog/index.html" %}
+
+
+{% block content %}
+   <h3>bloglar</h3>
+   {% for blog in blogs %}
+        <div class="card ">
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="{{blog.image.url}}" alt="" class="img-thumbnail">
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="/blog-detail/{{blog.id}}">
+                                {{ blog.title }}
+                            </a>
+                        </h5>
+                        <h6> {{ blog.category.name }}</h6>
+                        <p class="card-text">{{ blog.description|striptags|slice:"0:50" }}</p>
+                        <form action="{% url 'begenme' blog.id %}" method="POST">
+                           {%csrf_token %}
+                           <button type="submit" class="btn">beğenme</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+   {% endfor %}
+{% endblock %}
